@@ -6,11 +6,12 @@
   "scripts": {
     "start": "node build/app.js",
     "dev": "nodemon src/app.ts",
-    "build" : "tsc -p ."
+    "build": "tsc -p ."
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1"
   },
   "devDependencies": {
