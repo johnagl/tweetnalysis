@@ -31,3 +31,29 @@
 //         })
 //     }
 // });
+import * as express from 'express';
+import { Request, Response } from "express";
+class Twitter {
+    private router: express.Router;
+
+    public constructor() {
+        this.router = express.Router();
+        this.initializeRoutes();
+    }
+
+    private initializeRoutes() : void {
+        this.router.get('/', (req, res) => {
+            this.testGet(req, res);
+        });
+    }
+
+    public getRouter () : express.Router {
+        return this.router;
+    }
+
+    private testGet(req : Request, res : Response) {
+        res.send('api/twitter');
+    }
+}
+
+export default Twitter;

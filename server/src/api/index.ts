@@ -8,9 +8,9 @@ class API {
         this.initializeRoutes();
     }
 
-    private initializeRoutes() {
+    private initializeRoutes() : void {
         this.router.get('/', (req, res) => {
-            res.send('Server');
+            res.send('api/');
         });
     }
 

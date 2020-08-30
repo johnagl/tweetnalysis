@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import API from '../api/index';
+import Twitter from '../api/twitter';
 
 class Server {
     private app: express.Application;
@@ -9,7 +10,8 @@ class Server {
     public constructor(port: Number) {
         this.app = express();
         this.app.use(bodyParser.json());
-        this.app.use("/", new API().getRouter());
+        this.app.use("/api", new API().getRouter());
+        this.app.use("/api/twitter", new Twitter().getRouter());
         this.port = port;
     }
 
