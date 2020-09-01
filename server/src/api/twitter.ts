@@ -37,7 +37,7 @@ class Twitter {
         return result;
     }
 
-    private getRecentTweetsFromAccount(req: Request, res: Response) : void {
+    private async getRecentTweetsFromAccount(req: Request, res: Response) : Promise<void> {
         const username = req.params.username;
         const endpoint = 'https://api.twitter.com/2/tweets/search/recent?query=from:' + username;
         try {
@@ -55,13 +55,11 @@ class Twitter {
                         total += analysis.score;
                     })
                     total = total/numTweets;
-                    console.log(total);
                     res.json({ score: total});
                 }
             });
-            
         } catch (err) {
-            console.log(err);
+            res.status(500).send("Error: Could not get sentiment score");
         }
     }
 }
