@@ -1,8 +1,8 @@
-import request from 'request';
 import Sentiment from 'sentiment';
 import dotenv from 'dotenv';
 import * as express from 'express';
 import { Request, Response } from "express";
+import axios from 'axios';
 
 // var Analyzer = require('natural').SentimentAnalyzer;
 // var stemmer = require('natural').PorterStemmer;
@@ -42,22 +42,21 @@ class Twitter {
         const endpoint = 'https://api.twitter.com/2/tweets/search/recent?query=from:' + username;
         try {
             let total: number = 0;
-            request({ url: endpoint, json: true, headers : { 'Authorization' : 'Bearer ' + token}}, (error, response) => {
-                if (error) {
-                    console.log(error);
-                    throw new Error(error);
-                } else if (response.body.data.length == 0) {
-                    throw new Error('No tweets found for the following user');
-                } else {
-                    const numTweets = response.body.data.length;
-                    response.body.data.forEach((tweet : any) => {
-                        const analysis : Sentiment.AnalysisResult = this.analyzeTweet(tweet.text);
-                        total += analysis.score;
-                    })
-                    total = total/numTweets;
-                    res.json({ score: total});
+            const twitterResponse = await axios({
+                method: 'get',
+                url: endpoint,
+                headers: {
+                    'Authorization' : 'Bearer ' + token,
                 }
-            });
+            })
+            const tweets = twitterResponse.data.data;
+            const numTweets = tweets.length;
+            tweets.forEach((tweet : any) => {
+                const analysis : Sentiment.AnalysisResult = this.analyzeTweet(tweet.text);
+                total += analysis.score;
+            })
+            total = total/numTweets;
+            res.json({ score: total});
         } catch (err) {
             res.status(500).send("Error: Could not get sentiment score");
         }
