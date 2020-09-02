@@ -14,7 +14,7 @@ import axios from 'axios';
 dotenv.config();
 const token = process.env.BEARER_TOKEN;
 
-class Twitter {
+class Twitter { // For interacting with the Twitter API to get tweets
     private router: express.Router;
     private sentimentAnalyzer: Sentiment;
 
@@ -25,7 +25,7 @@ class Twitter {
     }
 
     private initializeRoutes() : void {
-        this.router.get('/sentimentscore/account/:username', this.getRecentTweetsFromAccount.bind(this))
+        this.router.get('/sentimentscore/account/:username', this.getRecentTweetsFromAccount.bind(this));
     }
 
     public getRouter () : express.Router {

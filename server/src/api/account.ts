@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-class API {
+class Account {
     private router: express.Router;
 
     public constructor() {
@@ -19,4 +19,4 @@ class API {
     }
 } 
 
-export default API;
+export default Account;
