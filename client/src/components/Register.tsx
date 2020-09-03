@@ -28,6 +28,7 @@ class Register extends Component<Props, State > {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmPasswordChange = this.handlePasswordChange.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
   }
 
   //TODO: Fix type any
@@ -45,13 +46,12 @@ class Register extends Component<Props, State > {
     this.setState({ confirmPassword: e.target.value });
   }
 
-  // TODO: Finish login
+  // TODO: Finish login, better error handling
   async handleRegister() {
     let email = this.state.email;
     let password = this.state.password;
-    console.log(email);
-    console.log(password);
-    // const res = await axios.get("http://localhost:5000/api/account/login?" + 'email=' + email + '&password=' + password);
+    const res = await axios.post("http://localhost:4000/api/register?" + 'email=' + email + '&password=' + password);
+    if (res.status === 200) this.redirectOnLogin();
   }
 
   // TODO: Finish redirect

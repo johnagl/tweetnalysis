@@ -1,6 +1,7 @@
 import * as express from 'express';
+import User from '../models/user';
 
-class Account {
+class Login {
     private router: express.Router;
 
     public constructor() {
@@ -10,7 +11,10 @@ class Account {
 
     private initializeRoutes() : void {
         this.router.get('/', (req, res) => {
-            res.send('api/');
+            res.send('get api/login');
+        });
+        this.router.post('/', (req, res) => {
+            res.send('post api/login');
         });
     }
 
@@ -19,4 +23,4 @@ class Account {
     }
 } 
 
-export default Account;
+export default Login;
