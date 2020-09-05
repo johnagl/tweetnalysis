@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 import { Request, Response } from "express";
 import Login from '../api/login';
 import Register from '../api/register';
-
+import passport from '../passport-config';
+import flash from 'express-flash';
+import session from 'express-session';
 
 dotenv.config();
 const databaseUrl = process.env.DATABASE_URL!;
@@ -15,7 +17,6 @@ mongoose.connect(databaseUrl, { useNewUrlParser: true, useUnifiedTopology: true,
 const db : mongoose.Connection = mongoose.connection;
 db.on('error', (error:any) => console.error(error));
 db.once('open', () => console.log('Connected to Mongoose'));
-
 class Server {
     private app: express.Application;
     private port: Number;
@@ -28,6 +29,14 @@ class Server {
             next();
         });
         this.app.use(bodyParser.json());
+        this.app.use(flash());
+        this.app.use(session({
+            secret: process.env.SESSION_SECRET!,
+            resave: false,
+            saveUninitialized: false
+        }));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
         this.app.use("/api/twitter", new Twitter().getRouter());
         this.app.use("/api/login", new Login().getRouter());
         this.app.use("/api/register", new Register().getRouter());

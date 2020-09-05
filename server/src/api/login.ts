@@ -1,6 +1,5 @@
 import * as express from 'express';
-import User from '../models/user';
-
+import passport from "../passport-config";
 class Login {
     private router: express.Router;
 
@@ -10,11 +9,23 @@ class Login {
     }
 
     private initializeRoutes() : void {
-        this.router.get('/', (req, res) => {
-            res.send('get api/login');
-        });
-        this.router.post('/', (req, res) => {
-            res.send('post api/login');
+        this.router.post("/", (req, res, next) => {
+            passport.authenticate("local", function(err, user, info) {
+                if (err) {
+                    console.log('this error');
+                    return res.status(400).json({ errors: err });
+                }
+                if (!user) {
+                    console.log('this error2');
+                    return res.status(400).json({ errors: "No user found" });
+                }
+                req.logIn(user, function(err) {
+                    if (err) {
+                        return res.status(400).json({ errors: err });
+                    }
+                    return res.status(200).json({ success: `logged in ${user.id}` });
+                });
+            })(req, res, next);
         });
     }
 

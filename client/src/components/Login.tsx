@@ -25,6 +25,7 @@ class Login extends Component<Props, State > {
     }
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
 
   //TODO: Fix type any
@@ -43,7 +44,11 @@ class Login extends Component<Props, State > {
     let password = this.state.password;
     console.log(email);
     console.log(password);
-    // const res = await axios.get("http://localhost:5000/api/account/login?" + 'email=' + email + '&password=' + password);
+    const userData = {
+      email,
+      password
+    };
+    const res = await axios.post("http://localhost:4000/api/login", userData);
   }
 
   // TODO: Finish redirect
